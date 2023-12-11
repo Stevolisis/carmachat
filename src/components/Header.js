@@ -8,7 +8,7 @@ export default function Header({page,auth,userInfo,signOut,menuStatus,setMenuSta
       
       { page !== 'home' ? <header className=' p-7 pb-5'>
         <h1 className='text-bgSecondary text-2xl'>
-          <a href='/' className='font-extrabold'>JAPA</a>
+          <a href='/' className='font-extrabold'>CarmChat</a>
         </h1>
       </header> 
       
@@ -17,7 +17,7 @@ export default function Header({page,auth,userInfo,signOut,menuStatus,setMenuSta
       <header className="flex justify-between items-center px-7 py-5">
         <div>
             <h1 className='text-bgSecondary text-2xl'>
-              <a href='/' className='font-extrabold'>JAPA</a>
+              <a href='/' className='font-extrabold'>CarmChat</a>
             </h1>
         </div>
 

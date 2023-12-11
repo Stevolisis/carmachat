@@ -1,50 +1,66 @@
 "use client"
 import Header from '../components/Header';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
+import { useNavigation } from 'react-router-dom';
+import api from '../utils/axiosConfig';
 
 export default function LogIn() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [loading,setLoading] = useState(false);
+  const router = useNavigation();
 
-
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    },
+    className:'w-[100px]'
+  });
   // Mikeidowu1.
   function handleSubmit(e){
+    setLoading(true);
+    api.post('/auth/login',{
+      email:email,
+      password:password,
+    })
+    .then(res=>{
+      const data = res.data;
+      console.log(data);
+      // if(data.succeeded === true){
+      //   Toast.fire({
+      //     icon: 'success',
+      //     title: data.message
+      //   });    
+      //   router.push('/', undefined, { shallow: true });
+      // }else{
+      //   Toast.fire({
+      //     icon: 'error',
+      //     title: 'Error Occured!'
+      //   });
+      // }
 
+    }).catch(err=>{
+      console.log(err);
+      Toast.fire({
+        icon: 'error',
+        title: 'Error Occured!'
+      });
+    }).finally(fin=>{
+      setLoading(false);
+    });
   }
 
   return (
     <>
     <Header/>
     <main className=" pt-12 sm:pt-20 flex justify-center items-center flex-col text-txtPrimary">
-        
-        <div className='absolute right-[10vw] top-[7vh] sm:right-[20vw] sm:top-[10vh]'>
-          <img
-            src='/yellow_circle.png'
-            alt='yellow_circle'
-            width={90}
-            height={90}
-          />
-        </div> 
-  
-        <div className='absolute left-[2vw] sm:left-[10vw] sm:top-[50vh]'>
-          <img
-            src='/pink_circle.png'
-            alt='pink_circle'
-            width={40}
-            height={40}
-            className='w-5 h-5 sm:w-10 sm:h-10'
-          />
-        </div> 
-  
-        <div className='absolute right-[9vw] bottom-[13vh] sm:right-[29vw] sm:bottom-[10vh]'>
-          <img
-            src='/blue_circle.png'
-            alt='blue_circle'
-            width={20}
-            height={20}
-          />
-        </div> 
   
         <div className='text-center'>
           <h2 className='text-3xl font-semibold pb-5'>

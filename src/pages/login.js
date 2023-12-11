@@ -34,10 +34,12 @@ export default function LogIn() {
     .then(res=>{
       const status = res.data.status;
       if(status === 'success'){
+        const token = res.data.data.token;
         Toast.fire({
           icon: 'success',
           title: status
         });    
+        localStorage.setItem('token', JSON.stringify(token));
         navigate('/dashboard');
       }else{
         Toast.fire({

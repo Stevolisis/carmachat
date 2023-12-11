@@ -2,14 +2,14 @@
 import Header from '../components/Header';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import { useNavigation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../utils/axiosConfig';
 
 export default function LogIn() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [loading,setLoading] = useState(false);
-  const router = useNavigation();
+  const navigate = useNavigate();
 
   const Toast = Swal.mixin({
     toast: true,
@@ -25,32 +25,32 @@ export default function LogIn() {
   });
   // Mikeidowu1.
   function handleSubmit(e){
+    e.preventDefault();
     setLoading(true);
     api.post('/auth/login',{
       email:email,
       password:password,
     })
     .then(res=>{
-      const data = res.data;
-      console.log(data);
-      // if(data.succeeded === true){
-      //   Toast.fire({
-      //     icon: 'success',
-      //     title: data.message
-      //   });    
-      //   router.push('/', undefined, { shallow: true });
-      // }else{
-      //   Toast.fire({
-      //     icon: 'error',
-      //     title: 'Error Occured!'
-      //   });
-      // }
+      const status = res.data.status;
+      if(status === 'success'){
+        Toast.fire({
+          icon: 'success',
+          title: status
+        });    
+        navigate('/dashboard');
+      }else{
+        Toast.fire({
+          icon: 'error',
+          title: status
+        });
+      }
 
     }).catch(err=>{
       console.log(err);
       Toast.fire({
         icon: 'error',
-        title: 'Error Occured!'
+        title: err.response.data.status
       });
     }).finally(fin=>{
       setLoading(false);

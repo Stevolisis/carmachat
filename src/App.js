@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Chatroom from "./pages/chatroom";
+import Dashboard from "./pages/dashboard";
 import LogIn from './pages/login';
 import Register from './pages/register';
 
@@ -11,6 +13,14 @@ function App() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
+    {
+      path: "/chatroom/:room",
+      element: <Chatroom />,
     },
     {
       path: "*",

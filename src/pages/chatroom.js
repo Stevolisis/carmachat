@@ -3,7 +3,13 @@ import { useParams } from "react-router-dom"
 import Header from "../components/Header";
 import { io } from 'socket.io-client';
 
-let socket=io.connect('http://localhost:80', { secure: true });
+const token=localStorage.getItem('token');
+let socket=io.connect('http://localhost:80', { 
+    secure: true,
+    query: {
+        token: token,
+    },
+ });
 
 export default function Chatroom(){
     const { room } = useParams();
@@ -22,8 +28,11 @@ export default function Chatroom(){
 
     socket.on('me',(arg)=>{
         console.log('args',arg);
-        alert('hi');
     });
+
+    useEffect(()=>{
+        socket.emit('join-room',{target:id});
+    },[]);
 
     useEffect(() => {
         scrollToBottom();

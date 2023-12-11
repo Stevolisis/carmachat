@@ -1,16 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"
 import Header from "../components/Header";
+import { io } from 'socket.io-client';
+
+let socket=io.connect('http://localhost:80', { secure: true });
 
 export default function Chatroom(){
     const { room } = useParams();
-    const [chats,setChats] = useState([{id:'1234',userName:'James',text:'loaded',time:'9pm'},{id:'1234',userName:'Roonie',text:'loaded',time:'9pm'}]);
+    const [message,setMessage] = useState('');
+    const [chats,setChats] = useState(null);
     const chatContainerRef = useRef();
     const id='1234';
 
     const scrollToBottom = () => {
         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     };
+
+    socket.on("connect", () => {
+        console.log('ggg',socket.id);
+    });
+
+    socket.on('me',(arg)=>{
+        console.log('args',arg);
+        alert('hi');
+    });
 
     useEffect(() => {
         scrollToBottom();
@@ -20,8 +33,8 @@ export default function Chatroom(){
     return(
         <>
             <Header/>
-            <section className="p-5 sm:p-12 pt-0 relative">
-                <div ref={chatContainerRef} className=" rounded-[4px] bg-gray-100 px-3 flex flex-col text-[9px] md:text-[11px] text-txtSecondary overflow-y-auto h-[90vw]"> 
+            <section className="px-5 sm:px-12 pt-0 relative">
+                <div ref={chatContainerRef} className=" rounded-[4px] bg-gray-100 px-3 flex flex-col text-[9px] md:text-[11px] text-txtSecondary overflow-y-auto h-[70vh]"> 
                     {
                         !chats ? <p>...loading</p> : 
                         chats.map((chat,i)=>{
@@ -38,7 +51,7 @@ export default function Chatroom(){
                 </div>
                 <div className="bg-bgSecondary py-3 w-full text-txtSecondary text-center text-xs my-3 px-3 bottom-0">
                     <form>
-                        <input className="bg-gray-100 w-full py-2 px-3 outline-none border-none rounded-md text-bgTertiary" type='text' placeholder="Send a message"/>
+                        <input value={message} onChange={(e)=>setMessage(e.target.value)} className="bg-gray-100 w-full py-2 px-3 outline-none border-none rounded-md text-bgTertiary" type='text' placeholder="Send a message"/>
                     </form>
                 </div>
             </section>

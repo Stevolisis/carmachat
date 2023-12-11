@@ -52,7 +52,7 @@ export default function LogIn() {
       console.log(err);
       Toast.fire({
         icon: 'error',
-        title: err.response.data.status
+        title: err.message
       });
     }).finally(fin=>{
       setLoading(false);

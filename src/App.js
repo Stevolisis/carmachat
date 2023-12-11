@@ -19,7 +19,7 @@ function App() {
       element: <Dashboard />,
     },
     {
-      path: "/chatroom/:room",
+      path: "/chatroom/:id",
       element: <Chatroom />,
     },
     {

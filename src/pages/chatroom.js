@@ -7,16 +7,15 @@ const token=localStorage.getItem('token');
 let socket=io.connect('http://localhost:80', { 
     secure: true,
     query: {
-        token: token,
+        token: JSON.parse(token),
     },
  });
 
 export default function Chatroom(){
-    const { room } = useParams();
+    const { id } = useParams();
     const [message,setMessage] = useState('');
     const [chats,setChats] = useState(null);
     const chatContainerRef = useRef();
-    const id='1234';
 
     const scrollToBottom = () => {
         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -28,6 +27,11 @@ export default function Chatroom(){
 
     socket.on('me',(arg)=>{
         console.log('args',arg);
+    });
+
+    socket.on('chats',(arg)=>{
+        console.log('chatschatschats',arg);
+        setChats(arg);
     });
 
     useEffect(()=>{

@@ -44,7 +44,6 @@ export default function Dashboard(){
               icon: 'error',
               title: err.response.data.status
             });
-          }).finally(fin=>{
           });
     },[])
 
@@ -53,7 +52,7 @@ export default function Dashboard(){
             <Header/>
             <section className="p-3 sm:p-12 flex flex-wrap gap-2 justify-center items-center">
                 {
-                    data.length === 0 ? <p>...loading</p> :
+                    data && data.length === 0 ? <p>...loading</p> :
                     data.map((user,i)=>{
                         return(
                             <div key={i} className='bg-gray-100 rounded-[5px] w-[150px] h-auto'>

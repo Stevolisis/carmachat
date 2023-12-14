@@ -82,7 +82,7 @@ export default function LogIn() {
           <div className='pt-5'>
             <p className='text-left pb-1'>Password</p>
             <input className='w-full p-3 border border-txtinput rounded-[5px]' value={password} onChange={(e)=>setPassword(e.target.value)} name='password' type='password' required='required' placeholder='Your Password'/>
-            <p className='text-right pt-1'><a href='#' className='text-bgSecondary font-medium'>Forgot Password?</a></p>
+            <p className='text-right pt-1'><a href='/' className='text-bgSecondary font-medium'>Forgot Password?</a></p>
           </div>
   
           <button className={`bg-bgSecondary text-bgPrimary w-full mt-5 py-3 rounded-[5px] px-4 font-semibold ${loading && 'opacity-30'}`} disabled={loading ? true : false}>Log In</button>

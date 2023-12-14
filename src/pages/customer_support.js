@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import api from "../utils/axiosConfig";
 
 
-export default function Dashboard(){
+export default function CustomerSupport(){
     const [data,setData] = useState([]);
     const navigate = useNavigate();
 

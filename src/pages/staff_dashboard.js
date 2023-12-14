@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import api from "../utils/axiosConfig";
 
 
-export default function Dashboard(){
+export default function StaffDashboard(){
     const [data,setData] = useState([]);
     const navigate = useNavigate();
 
@@ -66,9 +66,6 @@ export default function Dashboard(){
                         )
                     })
                 }
-            </section>
-            <section className="flex justify-center items-center">
-              <button onClick={()=>navigate(`/customer_support`)} href={`/chatroom/${user._id}`} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Customer Support</button>
             </section>
         </>
     )

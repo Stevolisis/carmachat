@@ -10,7 +10,6 @@ let socket=io.connect('http://localhost:80', {
         token: JSON.parse(token),
     },
  });
-
 export default function Chatroom(){
     const { id } = useParams();
     const [message,setMessage] = useState('');
@@ -19,50 +18,47 @@ export default function Chatroom(){
     const [chatwith,setChatwith] = useState(null);
     const chatContainerRef = useRef();
     const once = useRef(true);
-
+    const once2 = useRef(true);
     const scrollToBottom = () => {
         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     };
 
     const sendMessage = (e)=>{
         e.preventDefault();
-        console.log('message',message||'ppppp');
-        socket.emit('group-chat',message);
+        console.log("ggggggggggggggh")
+        once2.current && socket.emit('group-chat',message);
+        once2.current=false;
         setMessage('');
+        once2.current=true;
     }
 
-    socket.on("connect", () => {
-        console.log('ggg',socket.id);
-    });
-
-    socket.on('me',(arg)=>{
-        setMe(arg);
-    });
-    socket.on('chats',(arg)=>{
-        console.log('chatschatschats',arg);
-        setChats(arg);
-    });
-    socket.on('room_users',(arg)=>{
-        const tochat = arg.filter(user=>user._id!==me);
-        setChatwith(tochat[0].full_name);
-    });
-
     useEffect(()=>{
-        console.log('once: ',once);
         if(once.current){
             socket.emit('join-room',{target:id});
             once.current = false;
         }
     },[id, socket]);
-
+    
     useEffect(()=>{
+        socket.on("connect", () => {
+            console.log('ggg',socket.id);
+        });
+        socket.on('me',(arg)=>{
+            setMe(arg);
+        });
+        socket.on('chats',(arg)=>{
+            setChats(arg);
+        });
+        socket.on('room_users',(arg)=>{
+            const tochat = arg.filter(user=>user._id!==me);
+            setChatwith(tochat[0].full_name);
+        });
         socket.on('message',(msg)=>{
             setChats((prevChats) => [...prevChats, msg]);
         });
-        console.log('Listening to message emit');
+        
         return ()=> socket.off('message');
     },[]);
-
 
     useEffect(() => {
         scrollToBottom();

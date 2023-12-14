@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/axiosConfig';
 
-export default function LogIn() {
+export default function StaffLogIn() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [loading,setLoading] = useState(false);
@@ -30,6 +30,7 @@ export default function LogIn() {
     api.post('/auth/login',{
       email:email,
       password:password,
+      type:"staff",
     })
     .then(res=>{
       const status = res.data.status;
@@ -39,8 +40,8 @@ export default function LogIn() {
           icon: 'success',
           title: status
         });    
-        localStorage.setItem('token', JSON.stringify(token));
-        navigate('/dashboard');
+        localStorage.setItem('staff_token', JSON.stringify(token));
+        navigate('/staff_dashboard');
       }else{
         Toast.fire({
           icon: 'error',
@@ -91,10 +92,7 @@ export default function LogIn() {
   
   
         <div className='text-xs pt-16'>
-          <p>Don't have an account? <a className='text-bgSecondary font-medium' href='/register'>Sign Up</a></p>
-        </div>
-        <div className='text-xs pt-16'>
-          <p>A staff? <a className='text-bgSecondary font-medium' href='/staff_login'>Log In</a></p>
+          <p>Don't have an account? <a className='text-bgSecondary font-medium' href='/staff_register'>Sign Up</a></p>
         </div>
   
       </main>

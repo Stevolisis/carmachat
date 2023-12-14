@@ -3,6 +3,7 @@ import Chatroom from "./pages/chatroom";
 import CustomerSupport from "./pages/customer_support";
 import Dashboard from "./pages/dashboard";
 import LogIn from './pages/login';
+import OpenTicket from "./pages/open_ticket";
 import Register from './pages/register';
 import StaffDashboard from "./pages/staff_dashboard";
 import StaffLogIn from "./pages/staff_login";
@@ -31,7 +32,7 @@ function App() {
       element: <Dashboard />,
     },
     {
-      path: "/dashboard",
+      path: "/staff_dashboard",
       element: <StaffDashboard />,
     },
     {
@@ -41,6 +42,10 @@ function App() {
     {
       path: "/customer_support",
       element: <CustomerSupport />,
+    },
+    {
+      path: "/open_ticket",
+      element: <OpenTicket />,
     },
     {
       path: "*",

@@ -69,7 +69,7 @@ export default function StaffRegister() {
             icon: 'success',
             title: 'Signed Up Successfully'
           });
-          navigate('/');          
+          navigate('/staff_login');          
         }else{
           Toast.fire({
             icon: 'error',

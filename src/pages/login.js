@@ -93,7 +93,7 @@ export default function LogIn() {
         <div className='text-xs pt-16'>
           <p>Don't have an account? <a className='text-bgSecondary font-medium' href='/register'>Sign Up</a></p>
         </div>
-        <div className='text-xs pt-16'>
+        <div className='text-xs pt-3 pb-16'>
           <p>A staff? <a className='text-bgSecondary font-medium' href='/staff_login'>Log In</a></p>
         </div>
   

@@ -60,7 +60,7 @@ export default function Dashboard(){
                                     <p className="py-9 text-center">{user.full_name}</p>
                                 </div>
                                 <div>
-                                    <button onClick={()=>navigate(`/chatroom/${user._id}`)} href={`/chatroom/${user._id}`} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Chat</button>
+                                    <button onClick={()=>navigate(`/chatroom/${user._id}`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Chat</button>
                                 </div>
                             </div>
                         )
@@ -68,7 +68,7 @@ export default function Dashboard(){
                 }
             </section>
             <section className="flex justify-center items-center">
-              <button onClick={()=>navigate(`/customer_support`)} href={`/chatroom/${user._id}`} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Customer Support</button>
+              <button onClick={()=>navigate(`/customer_support`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Customer Support</button>
             </section>
         </>
     )

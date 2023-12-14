@@ -23,8 +23,8 @@ export default function StaffDashboard(){
     });
 
     useEffect(()=>{
-        const token = localStorage.getItem('token');
-        api.get('/users/getUsers',{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
+        const token = localStorage.getItem('staff_token');
+        api.get('/tickets/getAllTickets',{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
         .then(res=>{
             console.log(res.data);
             const status = res.data.status;
@@ -52,12 +52,11 @@ export default function StaffDashboard(){
             <Header/>
             <section className="p-3 sm:p-12 flex flex-wrap gap-2 justify-center items-center">
                 {
-                    data && data.length === 0 ? <p>...loading</p> :
-                    data.map((user,i)=>{
+                    data && data.map((user,i)=>{
                         return(
                             <div key={i} className='bg-gray-100 rounded-[5px] w-[150px] h-auto'>
                                 <div>
-                                    <p className="py-9 text-center">{user.full_name}</p>
+                                    <p className="py-9 text-center">{user.subject}</p>
                                 </div>
                                 <div>
                                     <button onClick={()=>navigate(`/chatroom/${user._id}`)} href={`/chatroom/${user._id}`} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Chat</button>

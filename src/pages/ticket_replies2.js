@@ -39,6 +39,7 @@ export default function TicketReplies2(){
                     icon: 'success',
                     title: status
                 });  
+                setMsg("");
                 getTicket();
             }else{
               Toast.fire({

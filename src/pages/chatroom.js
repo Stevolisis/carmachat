@@ -25,7 +25,6 @@ export default function Chatroom(){
 
     const sendMessage = (e)=>{
         e.preventDefault();
-        console.log("ggggggggggggggh")
         once2.current && socket.emit('group-chat',message);
         once2.current=false;
         setMessage('');
@@ -57,8 +56,14 @@ export default function Chatroom(){
             setChats((prevChats) => [...prevChats, msg]);
         });
         
-        return ()=> socket.off('message');
-    },[]);
+        return ()=> {
+            socket.off('message');
+            socket.off('chats');
+            socket.off('room_users');
+            socket.off('me');
+            socket.off('connect');
+        }
+    },[me,socket]);
 
     useEffect(() => {
         scrollToBottom();

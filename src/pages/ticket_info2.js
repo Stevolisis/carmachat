@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2";
 import Header from "../components/Header";
 import api from "../utils/axiosConfig";
@@ -8,6 +8,7 @@ import api from "../utils/axiosConfig";
 export default function TicketInfo2(){
     const { id } = useParams();
     const [data,setData] = useState(null);
+    const navigate = useNavigate();
 
     const Toast = Swal.mixin({
         toast: true,
@@ -104,6 +105,17 @@ export default function TicketInfo2(){
                         <div className="flex py-2 items-center">
                             <p className="text-lg font-semibold pr-4">Date Created: </p>
                             <p className="text-sm">{data.created_at}</p>
+                        </div>
+                        <div className="flex items-center">
+                            {
+                                data.replies.length === 0 ? " " : 
+                                <>
+                                    <p className="text-lg font-semibold pr-4">replies: </p>
+                                    <button onClick={() => navigate(`/ticket_replies2/${data._id}`)} className='bg-white text-bgSecondary px-5 py-2 rounded-[3px] w-full'>
+                                        View
+                                    </button>
+                                </>
+                            }
                         </div>
                     </>
                     }

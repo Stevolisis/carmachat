@@ -8,6 +8,10 @@ import Register from './pages/register';
 import StaffDashboard from "./pages/staff_dashboard";
 import StaffLogIn from "./pages/staff_login";
 import StaffRegister from "./pages/staff_register";
+import TicketInfo from "./pages/ticket_info";
+import TicketInfo2 from "./pages/ticket_info2";
+import TicketReplies from "./pages/ticket_replies";
+import TicketReplies2 from "./pages/ticket_replies2";
 
 function App() {
   const router = createBrowserRouter([
@@ -46,6 +50,22 @@ function App() {
     {
       path: "/open_ticket",
       element: <OpenTicket />,
+    },
+    {
+      path: "/ticket_info/:id",
+      element: <TicketInfo />,
+    },
+    {
+      path: "/ticket_info2/:id",
+      element: <TicketInfo2 />,
+    },
+    {
+      path: "/ticket_replies/:id",
+      element: <TicketReplies />,
+    },
+    {
+      path: "/ticket_replies2/:id",
+      element: <TicketReplies2 />,
     },
     {
       path: "*",

@@ -99,7 +99,7 @@ export default function OpenTicket() {
 
           <div className='pt-5'>
             <p className='text-left pb-1'>Attachments (optonal) </p>
-            <input className='w-full p-3 border border-txtinput rounded-[5px]' name='attachments' type='file' placeholder='Type here'/>
+            <input className='w-full p-3 border border-txtinput rounded-[5px]' name='attachments' type='file' multiple placeholder='Type here'/>
           </div>
   
           <button className={`bg-bgSecondary text-bgPrimary w-full mt-5 py-3 rounded-[5px] px-4 font-semibold ${loading && 'opacity-30'}`} disabled={loading ? true : false}>Submit</button>

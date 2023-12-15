@@ -7,8 +7,9 @@ import api from "../utils/axiosConfig";
 
 
 export default function CustomerSupport(){
-    const [data,setData] = useState([]);
-    const navigate = useNavigate();
+  const [data,setData] = useState([]);
+  const [filtered_data,setFiltered_data] = useState(null);
+  const navigate = useNavigate();
 
     const Toast = Swal.mixin({
         toast: true,
@@ -23,6 +24,13 @@ export default function CustomerSupport(){
         className:'w-[100px]'
     });
 
+    function filter(key){
+      if(key === "all"){
+        setFiltered_data(data);
+        return;
+      }
+      setFiltered_data(data.filter(item=>item.status===key));
+    }
     useEffect(()=>{
         const token = localStorage.getItem('token');
         api.get('/tickets/getTickets',{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
@@ -32,7 +40,8 @@ export default function CustomerSupport(){
             const data = res.data.data;
     
             if(status === 'success'){
-              setData(data);      
+              setData(data);   
+              setFiltered_data(data);   
             }else{
               Toast.fire({
                 icon: 'error',
@@ -53,32 +62,56 @@ export default function CustomerSupport(){
             <Header/>
             <section className="p-3 sm:p-12 flex">
               <div className="flex flex-wrap gap-1 justify-center items-center p-2">
-                <button className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">All Tickets</button>
-                <button className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">Open Tickets</button>
-                <button className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">In Progress Tickets</button>
-                <button className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">Resolved Tickets</button>
-                <button className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">Closed Tickets</button>
+                <button onClick={()=>filter("all")} className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">All Tickets</button>
+                <button onClick={()=>filter("Open")} className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">Open Tickets</button>
+                <button onClick={()=>filter("In Progress")} className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">In Progress Tickets</button>
+                <button onClick={()=>filter("Resolved")} className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">Resolved Tickets</button>
+                <button onClick={()=>filter("Closed")} className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">Closed Tickets</button>
               </div>
               <div className="flex justify-end px-20">
                 <button onClick={()=>navigate(`/open_ticket`)} className="bg-bgSecondary text-white px-5 py-2 rounded-[3px] h-auto w-[200px] flex items-center justify-center">Open a Ticket <FiPlus/></button>
               </div>
             </section>
-            <section className="p-3 sm:p-12 flex flex-wrap gap-2 justify-center items-center">
-                {
-                    data && (data.length === 0 ? <p className="text-gray-600 text-xl font-semibold">No Ticket Found</p> :
-                    data && data.map((user,i)=>{
-                        return(
-                            <div key={i} className='bg-gray-100 rounded-[5px] w-[150px] h-auto'>
-                                <div>
-                                    <p className="py-9 text-center">{user.full_name}</p>
-                                </div>
-                                <div>
-                                    <button onClick={()=>navigate(`/chatroom/${user._id}`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Chat</button>
-                                </div>
-                            </div>
-                        )
-                    }))
-                }
+
+            <section className="p-3 sm:p-12">
+                <table className="w-full">
+                <thead>
+                  <tr>
+                    <td>Id</td>
+                    <td>Subject</td>
+                    <td>Status</td>
+                    <td>View</td>
+                  </tr>
+                </thead>
+                  <tbody>
+                    {
+                      !filtered_data ? (
+                        <tr>
+                          <td colSpan="4">...loading</td>
+                        </tr>
+                      ) : (filtered_data.length === 0 ? (
+                        <tr>
+                          <td colSpan="4" className="text-gray-600 text-xl font-semibold">No Ticket Found</td>
+                        </tr>
+                      ) : (
+                        filtered_data.map((ticket, i) => {
+                          return (
+                            <tr key={i} className='bg-gray-100 rounded-[5px] w-full h-auto mb-12 p-3'>
+                              <td className="p-3">{ticket._id}</td>
+                              <td className="p-3">{ticket.subject}</td>
+                              <td className="p-3">{ticket.status}</td>
+                              <td className="p-3">
+                                <button onClick={() => navigate(`/ticket_info2/${ticket._id}`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>
+                                  View
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ))
+                    }
+                  </tbody>
+                </table>
             </section>
         </>
     )

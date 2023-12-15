@@ -23,7 +23,32 @@ export default function TicketInfo(){
         className:'w-[100px]'
     });
 
-    useEffect(()=>{
+    function updateTicketStatus(status){
+        const token = localStorage.getItem('staff_token');
+        api.patch(`/tickets/ticket_status/${id}`,{status:status},{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
+        .then(res=>{
+            console.log(res.data);
+            const status = res.data.status;
+            const data = res.data.data;
+    
+            if(status === 'success'){
+              fetchTicket();  
+            }else{
+              Toast.fire({
+                icon: 'error',
+                title: status
+              });
+            }
+          }).catch(err=>{
+            console.log(err);
+            Toast.fire({
+              icon: 'error',
+              title: err.response.data.status
+            });
+          });
+    }
+
+    function fetchTicket(){
         const token = localStorage.getItem('staff_token');
         api.get(`/tickets/getTicket/${id}`,{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
         .then(res=>{
@@ -46,6 +71,10 @@ export default function TicketInfo(){
               title: err.response.data.status
             });
           });
+    }
+
+    useEffect(()=>{
+        fetchTicket();
     },[]);
 
     return(
@@ -121,17 +150,20 @@ export default function TicketInfo(){
 
             <section className="mb-20 gap-4 pt-5 flex flex-wrap justify-center items-center text-txtPrimary">
                 {
-                    data && (data.status === "Closed" ? "" : data.status === "In Progress" || data.status === "Close" || data.status === "Resolved" ? " " : <button className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-[220px]'>
+                    data && (data.status === "Closed" ? "" : data.status === "In Progress" || data.status === "Close" || data.status === "Resolved" ? " " : 
+                    <button onClick={()=>updateTicketStatus("In Progress")} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-[220px]'>
                         Attend To
                     </button>)
                 }
                {
-                    data && (data.status === "Closed" ? "" : data.status === "Resolved" ? " " : <button className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-[220px]'>
+                    data && (data.status === "Closed" ? "" : data.status === "Resolved" ? " " : 
+                    <button onClick={()=>updateTicketStatus("Resolved")} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-[220px]'>
                         Resolved
                     </button>)
                 }
                {
-                    data && (data.status === "Closed" ? " " : <button className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-[220px]'>
+                    data && (data.status === "Closed" ? " " : 
+                    <button onClick={()=>updateTicketStatus("Closed")} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-[220px]'>
                         Close
                     </button>)
                 }

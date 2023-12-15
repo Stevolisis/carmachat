@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2";
 import Header from "../components/Header";
+import Reply from "../components/Reply";
 import api from "../utils/axiosConfig";
 
 
 export default function TicketInfo(){
     const { id } = useParams();
     const [data,setData] = useState(null);
+    const [show,setShow] = useState(false);
+    const [msg,setMsg] = useState("");
     const navigate = useNavigate();
 
     const Toast = Swal.mixin({
@@ -23,13 +26,12 @@ export default function TicketInfo(){
         className:'w-[100px]'
     });
 
-    function updateTicketStatus(status){
+    function handleReply(){
         const token = localStorage.getItem('staff_token');
-        api.patch(`/tickets/ticket_status/${id}`,{status:status},{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
+        api.post(`/tickets/reply_ticket/${id}/staff`,{msg:msg,user:data.creator._id},{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
         .then(res=>{
             console.log(res.data);
             const status = res.data.status;
-            const data = res.data.data;
     
             if(status === 'success'){
               fetchTicket();  
@@ -37,6 +39,42 @@ export default function TicketInfo(){
               Toast.fire({
                 icon: 'error',
                 title: status
+              });
+            }
+          }).catch(err=>{
+            console.log(err);
+            Toast.fire({
+              icon: 'error',
+              title: err.response.data.status
+            });
+          }).finally(fin=>{
+            setShow(false);
+          })      
+    }
+
+    function updateTicketStatus(status){
+        const token = localStorage.getItem('staff_token');
+        api.patch(`/tickets/ticket_status/${id}`,{status:status},{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
+        .then(res=>{
+            console.log(res.data);
+            const repstatus = res.data.status;
+    
+            if(repstatus === 'success'){
+              if(status === "In Progress"){
+                handleReply();
+                console.log('1111111111')
+              }else{
+                // console.log('2222222222')
+                Toast.fire({
+                    icon: 'success',
+                    title: repstatus
+                });
+                fetchTicket();  
+              }
+            }else{
+              Toast.fire({
+                icon: 'error',
+                title: repstatus
               });
             }
           }).catch(err=>{
@@ -80,6 +118,7 @@ export default function TicketInfo(){
     return(
         <>
             <Header/>
+            {show && <Reply updateTicketStatus={updateTicketStatus} setShow={setShow} msg={msg} setMsg={setMsg}/>}
             <section className="pt-12 sm:pt-20 flex justify-center items-center flex-col text-txtPrimary">
            
             <div className='p-10 rounded-[4px] w-[85vw] sm:w-[70vw] md:w-[60vw] bg-bgSecondary text-white'>
@@ -135,12 +174,15 @@ export default function TicketInfo(){
                             <p className="text-lg font-semibold pr-4">Date Created: </p>
                             <p className="text-sm">{data.created_at}</p>
                         </div>
-                        <div>
+                        <div className="flex items-center">
                             {
                                 data.replies.length === 0 ? " " : 
-                                <button onClick={() => navigate(`/ticket_replies/${data._id}`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>
-                                    View
-                              </button>
+                                <>
+                                    <p className="text-lg font-semibold pr-4">replies: </p>
+                                    <button onClick={() => navigate(`/ticket_replies/${data._id}`)} className='bg-white text-bgSecondary px-5 py-2 rounded-[3px] w-full'>
+                                        View
+                                    </button>
+                                </>
                             }
                         </div>
                     </>
@@ -151,7 +193,7 @@ export default function TicketInfo(){
             <section className="mb-20 gap-4 pt-5 flex flex-wrap justify-center items-center text-txtPrimary">
                 {
                     data && (data.status === "Closed" ? "" : data.status === "In Progress" || data.status === "Close" || data.status === "Resolved" ? " " : 
-                    <button onClick={()=>updateTicketStatus("In Progress")} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-[220px]'>
+                    <button onClick={()=>setShow(true)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-[220px]'>
                         Attend To
                     </button>)
                 }

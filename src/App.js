@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AddPackage from "./pages/add_package";
 import Chatroom from "./pages/chatroom";
 import CustomerSupport from "./pages/customer_support";
 import Dashboard from "./pages/dashboard";
@@ -7,7 +8,9 @@ import OpenTicket from "./pages/open_ticket";
 import Register from './pages/register';
 import StaffDashboard from "./pages/staff_dashboard";
 import StaffLogIn from "./pages/staff_login";
+import StaffPackages from "./pages/staff_packages";
 import StaffRegister from "./pages/staff_register";
+import StaffServices from "./pages/staff_services";
 import TicketInfo from "./pages/ticket_info";
 import TicketInfo2 from "./pages/ticket_info2";
 import TicketReplies from "./pages/ticket_replies";
@@ -66,6 +69,22 @@ function App() {
     {
       path: "/ticket_replies2/:id",
       element: <TicketReplies2 />,
+    },
+    {
+      path: "/staff_services",
+      element: <StaffServices />,
+    },
+    {
+      path: "/add_service",
+      element: <StaffServices />,
+    },
+    {
+      path: "/staff_packages",
+      element: <StaffPackages />,
+    },
+    {
+      path: "/add_package",
+      element: <AddPackage />,
     },
     {
       path: "*",

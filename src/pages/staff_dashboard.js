@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiFolder } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Header from "../components/Header";
@@ -68,6 +68,12 @@ export default function StaffDashboard(){
                 <button onClick={()=>filter("In Progress")} className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">In Progress Tickets</button>
                 <button onClick={()=>filter("Resolved")} className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">Resolved Tickets</button>
                 <button onClick={()=>filter("Closed")} className="bg-gray-200 text-bgSecondary px-4 py-1 rounded-[3px] w-[200px]">Closed Tickets</button>
+              </div>
+              <div className="flex justify-end px-20">
+                <button onClick={()=>navigate(`/staff_services`)} className="bg-bgSecondary text-white px-5 py-2 rounded-[3px] h-auto w-[200px] flex items-center justify-center">Services <FiFolder className="ml-2"/></button>
+              </div>
+              <div className="flex justify-end px-20">
+                <button onClick={()=>navigate(`/staff_packages`)} className="bg-bgSecondary text-white px-5 py-2 rounded-[3px] h-auto w-[200px] flex items-center justify-center">Packages <FiFolder className="ml-2"/></button>
               </div>
             </section>
 

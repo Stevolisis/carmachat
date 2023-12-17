@@ -65,7 +65,7 @@ export default function StaffPackages(){
                     <td>Id</td>
                     <td>Name</td>
                     <td>Type</td>
-                    <td>Pricing</td>
+                    <td>Pricing ( $ )</td>
                   </tr>
                 </thead>
                   <tbody>

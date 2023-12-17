@@ -67,8 +67,13 @@ export default function Dashboard(){
                     })
                 }
             </section>
-            <section className="flex justify-center items-center">
-              <button onClick={()=>navigate(`/customer_support`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Customer Support</button>
+            <section className="p-3 sm:p-12 flex flex-wrap gap-2 justify-center items-center">
+              <div className="flex justify-center items-center">
+                <button onClick={()=>navigate(`/customer_support`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Customer Support</button>
+              </div>
+              <div className="flex justify-center items-center my-4">
+                <button onClick={()=>navigate(`/services`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Services</button>
+              </div>
             </section>
         </>
     )

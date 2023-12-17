@@ -4,12 +4,13 @@ import Header from "../components/Header";
 import { io } from 'socket.io-client';
 
 const token=localStorage.getItem('token');
-let socket=io.connect('http://localhost:80', { 
-    secure: true,
-    query: {
-        token: JSON.parse(token),
-    },
- });
+// let socket=io.connect('http://localhost:80', { 
+//     secure: true,
+//     query: {
+//         token: JSON.parse(token),
+//     },
+//  });
+let socket="";
 export default function Chatroom(){
     const { id } = useParams();
     const [message,setMessage] = useState('');

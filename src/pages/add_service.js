@@ -51,8 +51,8 @@ export default function AddService() {
           }).catch(err=>{
             console.log(err);
             Toast.fire({
-              icon: 'error',
-              title: err.response.data.status
+                icon: 'error',
+                title: err.message
             });
           });
     },[])

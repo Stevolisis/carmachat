@@ -45,7 +45,7 @@ export default function TicketInfo(){
             console.log(err);
             Toast.fire({
               icon: 'error',
-              title: err.response.data.status
+              title: err.message
             });
           }).finally(fin=>{
             setShow(false);
@@ -81,7 +81,7 @@ export default function TicketInfo(){
             console.log(err);
             Toast.fire({
               icon: 'error',
-              title: err.response.data.status
+              title: err.message
             });
           });
     }
@@ -106,7 +106,7 @@ export default function TicketInfo(){
             console.log(err);
             Toast.fire({
               icon: 'error',
-              title: err.response.data.status
+              title: err.message
             });
           });
     }

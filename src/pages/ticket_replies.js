@@ -51,7 +51,7 @@ export default function TicketReplies(){
             console.log(err);
             Toast.fire({
               icon: 'error',
-              title: err.response.data.status
+              title: err.message
             });
           }).finally(fin=>{
             setShow(false);
@@ -78,7 +78,7 @@ export default function TicketReplies(){
             console.log(err);
             Toast.fire({
               icon: 'error',
-              title: err.response.data.status
+              title: err.message
             });
           }).finally(fin=>{
             setShow(false);

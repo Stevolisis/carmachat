@@ -53,7 +53,7 @@ export default function StaffDashboard(){
             console.log(err);
             Toast.fire({
               icon: 'error',
-              title: err.response.data.status
+              title: err.message
             });
           });
     },[])

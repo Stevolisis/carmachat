@@ -42,8 +42,8 @@ export default function TicketInfo2(){
           }).catch(err=>{
             console.log(err);
             Toast.fire({
-              icon: 'error',
-              title: err.response.data.status
+                icon: 'error',
+                title: err.message
             });
           });
     },[]);

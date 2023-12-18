@@ -74,6 +74,9 @@ export default function Dashboard(){
               <div className="flex justify-center items-center my-4">
                 <button onClick={()=>navigate(`/services`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Services</button>
               </div>
+              <div className="flex justify-center items-center my-4">
+                <button onClick={()=>navigate(`/bookings`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Bookings</button>
+              </div>
             </section>
         </>
     )

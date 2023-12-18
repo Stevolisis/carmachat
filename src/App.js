@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AddPackage from "./pages/add_package";
 import AddService from "./pages/add_service";
+import Bookings from "./pages/bookings";
 import Chatroom from "./pages/chatroom";
 import CustomerSupport from "./pages/customer_support";
 import Dashboard from "./pages/dashboard";
@@ -96,6 +97,10 @@ function App() {
     {
       path: "/service/:id",
       element: <Service />,
+    },
+    {
+      path: "/bookings",
+      element: <Bookings />,
     },
     {
       path: "*",

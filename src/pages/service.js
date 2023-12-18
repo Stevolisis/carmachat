@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2";
 import Header from "../components/Header";
+import Modal from "../components/Modal";
 import api from "../utils/axiosConfig";
+import { MdOutlineCancel } from "react-icons/md";
 
 
 export default function Service(){
     const { id } = useParams();
     const [data,setData] = useState(null);
     const [loading,setLoading] = useState(false);
+    const [show,setShow] = useState(false);
     const navigate = useNavigate();
 
     const Toast = Swal.mixin({
@@ -24,37 +27,7 @@ export default function Service(){
         className:'w-[100px]'
     });
 
-    function addBooking(){
-        const token = localStorage.getItem('token');
-        setLoading(true);
-        api.post('/bookings/addBooking',{service:data},{withCredentials:true,headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
-        .then(res=>{
-            const status = res.data.status;
-            if(status === 'success'){
-                Toast.fire({
-                icon: 'success',
-                title: status
-                });    
-                window.location.href=res.data.data;
-            }else{
-                Toast.fire({
-                icon: 'error',
-                title: status
-                });
-            }
-
-        }).catch(err=>{
-            console.log(err);
-            Toast.fire({
-                icon: 'error',
-                title: err.message
-            });
-        }).finally(fin=>{
-            setLoading(false);
-        });
-    }
-
-    useEffect(()=>{
+    function getServices(){
         const token = localStorage.getItem('token');
         api.get(`/services/getService/${id}`,{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
         .then(res=>{
@@ -77,11 +50,91 @@ export default function Service(){
               title: err.response.data.status
             });
           });
+    }
+
+    function addBooking(){
+        const token = localStorage.getItem('token');
+        setLoading(true);
+        api.post('/bookings/addBooking',{service:data},{withCredentials:true,headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
+        .then(res=>{
+            const status = res.data.status;
+            if(status === 'success'){
+                Toast.fire({
+                icon: 'success',
+                title: status
+                });    
+                window.location.href=res.data.data;
+            }else{
+                Toast.fire({
+                icon: 'error',
+                title: status
+                });
+            }
+
+        }).catch(err=>{
+            if(err.request.status === 401){
+                setShow(true);
+            }
+            console.log(err);
+            Toast.fire({
+                icon: 'error',
+                title: err.request.statusText
+            });
+        }).finally(fin=>{
+            setLoading(false);
+        });
+    }
+    
+
+    function subscribePackage(){
+        const token = localStorage.getItem('token');
+        api.post(`/packages/subscribeToPackage`,{package:data.pid.name},{headers:{Authorization:`Bearer ${JSON.parse(token)}`}})
+        .then(res=>{
+            console.log(res.data);
+            const status = res.data.status;
+            const data = res.data.data;
+    
+            if(status === 'success'){
+                Toast.fire({
+                    icon: 'success',
+                    title: status
+                });    
+            }else{
+              Toast.fire({
+                icon: 'error',
+                title: status
+              });
+            }
+          }).catch(err=>{
+            console.log(err);
+            Toast.fire({
+              icon: 'error',
+              title: err.response.data.status || err.request.statusText
+            });
+          });
+    }
+
+    useEffect(()=>{
+        getServices();
     },[]);
 
     return(
         <>
             <Header/>
+            {show &&
+                <Modal>
+                    <div  className="pt-2 text-xs w-[80vw] sm:w-[60vw] md:w-[40vw]">
+                        <button onClick={()=>subscribePackage()} className='bg-bgSecondary text-white px-5 py-5 rounded-[3px] w-full'>
+                            Subscribe to {data.pid.name} package
+                        </button>
+                    </div>
+                    <div>
+                        <button onClick={()=>setShow(false)} className='bg-bgSecondary p-1 text-white mt-6 rounded-[3px] w-full rounded-full'>
+                            <MdOutlineCancel size={30}/>
+                        </button>
+                    </div>
+                </Modal>
+            }
             <section className="pt-12 sm:pt-20 flex justify-center items-center flex-col text-txtPrimary">
            
             <div className='p-10 mb-20 rounded-[4px] w-[85vw] sm:w-[70vw] md:w-[60vw] bg-bgSecondary text-white'>

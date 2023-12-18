@@ -98,7 +98,9 @@ export default function Service(){
                 Toast.fire({
                     icon: 'success',
                     title: status
-                });    
+                }); 
+                window.location.href=res.data.data;
+                   
             }else{
               Toast.fire({
                 icon: 'error',
@@ -109,7 +111,7 @@ export default function Service(){
             console.log(err);
             Toast.fire({
               icon: 'error',
-              title: err.response.data.status || err.request.statusText
+              title: err.request.statusText
             });
           });
     }

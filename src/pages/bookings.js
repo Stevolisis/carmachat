@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import Header from "../components/Header";
 import api from "../utils/axiosConfig";
@@ -9,6 +9,7 @@ export default function Bookings(){
   const [data,setData] = useState([]);
   const query=useSearchParams();
   const session_id = query[0].get("session_id");
+  const navigate = useNavigate();
 
     const Toast = Swal.mixin({
         toast: true,
@@ -123,6 +124,17 @@ export default function Bookings(){
                     }
                   </tbody>
                 </table>
+            </section>
+            <section className="p-3 sm:p-12 flex flex-wrap gap-2 justify-center items-center">
+              <div className="flex justify-center items-center">
+                <button onClick={()=>navigate(`/customer_support`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Customer Support</button>
+              </div>
+              <div className="flex justify-center items-center my-4">
+                <button onClick={()=>navigate(`/services`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Services</button>
+              </div>
+              <div className="flex justify-center items-center my-4">
+                <button onClick={()=>navigate(`/bookings`)} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Bookings</button>
+              </div>
             </section>
         </>
     )

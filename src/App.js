@@ -47,7 +47,7 @@ function App() {
       element: <StaffDashboard />,
     },
     {
-      path: "/chatroom/:id",
+      path: "/chatroom",
       element: <Chatroom />,
     },
     {

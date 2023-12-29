@@ -1,18 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 import Header from "../components/Header";
 import { io } from 'socket.io-client';
+import Swal from "sweetalert2";
 
 const token=localStorage.getItem('token');
-// let socket=io.connect('http://localhost:80', { 
-//     secure: true,
-//     query: {
-//         token: JSON.parse(token),
-//     },
-//  });
-let socket="";
+let socket=io.connect('http://localhost:8888', { 
+    secure: true,
+    query: {
+        token: JSON.parse(token),
+    },
+});
+// let socket="";
 export default function Chatroom(){
-    const { id } = useParams();
+    const query=useSearchParams();
+    const targetId=query[0].get('targetId')
+    const targetName=query[0].get('targetName').replace(/_/g, ' ');
     const [message,setMessage] = useState('');
     const [chats,setChats] = useState(null);
     const [me,setMe] = useState(null);
@@ -34,26 +37,43 @@ export default function Chatroom(){
 
     useEffect(()=>{
         if(once.current){
-            socket.emit('join-room',{target:id});
+            socket.emit('join-room',{targetId:targetId,targetName:targetName});
             once.current = false;
         }
-    },[id, socket]);
+    },[targetId, socket]);
     
     useEffect(()=>{
         socket.on("connect", () => {
             console.log('ggg',socket.id);
         });
+        socket.on('connect_error', (error) => {
+            console.error('Socket connection error:', error.message);
+            Swal.fire(
+                "Socket Connection Error",
+                error.message,
+                "error"
+            );
+        });
         socket.on('me',(arg)=>{
-            setMe(arg);
+            console.log('meme',arg);
+            setMe({id:arg.id,name:arg.name});
         });
         socket.on('chats',(arg)=>{
+            console.log('cchttss',arg);
+
             setChats(arg);
         });
-        socket.on('room_users',(arg)=>{
-            const tochat = arg.filter(user=>user._id!==me);
-            setChatwith(tochat[0].full_name);
+        socket.on('room_users', (arg) => {
+            const toChatUser = arg.find(user => user === targetId);
+        
+            if (toChatUser) {
+                setChatwith(targetName); // Assuming that the user object has a property named full_name
+            }
+        
+            console.log('roomusers', arg);
         });
         socket.on('message',(msg)=>{
+            console.log("msg: ",msg);
             setChats((prevChats) => [...prevChats, msg]);
         });
         
@@ -82,13 +102,13 @@ export default function Chatroom(){
                     {
                         !chats ? <p>...loading</p> : 
                         chats.map((chat,i)=>{
-                            return chat.uid == me ?
+                            return chat.uid == me.id ?
                             <div className='flex justify-end bottom-0 right-0' key={i}>
-                                <p className="p-1.5 md:p-2 w-fit text-sm text-white text-right bg-bgSecondary rounded-tr-md rounded-bl-md my-2"><span className='text-[10px]'>{chat.userName}, {chat.time}</span><br/>{chat.text}</p>
+                                <p className="p-1.5 md:p-2 w-fit text-sm text-white text-right bg-bgSecondary rounded-tr-md rounded-bl-md my-2"><span className='text-[10px]'>{me.name}, {chat.time}</span><br/>{chat.text}</p>
                             </div>
                             :
                             <div className='flex justify-start left-0 bottom-0' key={i}>
-                                <p className="p-1.5 md:p-2 w-fit bg-gray-500 rounded-tr-md rounded-bl-md my-2 text-white"><span className='text-[10px]'>{chat.userName}, {chat.time}</span><br/>{chat.text}</p>
+                                <p className="p-1.5 md:p-2 w-fit bg-gray-500 rounded-tr-md rounded-bl-md my-2 text-white"><span className='text-[10px]'>{targetName}, {chat.time}</span><br/>{chat.text}</p>
                             </div>
                         })
                     }

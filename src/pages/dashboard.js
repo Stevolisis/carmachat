@@ -60,7 +60,7 @@ export default function Dashboard(){
                                     <p className="py-9 text-center">{user.full_name}</p>
                                 </div>
                                 <div>
-                                  <button onClick={() => { window.location.href = `/chatroom/${user._id}`; }} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Chat</button>
+                                  <button onClick={() => { window.location.href = `/chatroom?targetId=${user._id}&targetName=${user.full_name.replace(/\s/g, '_')}`; }} className='bg-bgSecondary text-white px-5 py-2 rounded-[3px] w-full'>Chat</button>
                                 </div>
                             </div>
                         )
